@@ -20,7 +20,7 @@ const server=app.listen(process.env.PORT,()=>{
 
 const io =new Server(server,{
     cors:{
-        origin: "https://chatmess-frontend.vercel.app",
+        origin: "https://chatmess-frontend-pcin8qou4-devmamgain.vercel.app/",
     },
 })
 global.onlineUsers = new Map()
