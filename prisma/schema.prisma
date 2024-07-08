@@ -1,33 +1,31 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider = "mongodb"
+  url      = "mongodb+srv://devmamgain123:v5iDGGdbm0yr3Rq0@cluster0.fvoil81.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0"
 }
 
 model User {
-  id Int @id @default(autoincrement())
-  email String @unique
-  name String
-  profilePicture String @default("") @db.VarChar(64000)
-  about String @default("")
-  sentMessages Messages[] @relation("sentMessages")
-  recievedMessages Messages[] @relation("recievedMessages")
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  email           String     @unique
+  name            String
+  profilePicture  String     @default("")
+  about           String     @default("")
+  sentMessages    Messages[] @relation("UserSentMessages")
+  recievedMessages Messages[] @relation("UserReceivedMessages")
 }
 
 model Messages {
-  id Int @id @default(autoincrement())
-  sender User @relation("sentMessages",fields: [senderId],references: [id])
-  senderId Int
-  reciever User @relation("recievedMessages",fields: [recieverId],references: [id])
-  recieverId Int
-  type String @default("text")
-  message String
-  messageStatus String @default("sent")
-  createdAt DateTime @default(now())
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  senderId      String   @db.ObjectId
+  recieverId    String   @db.ObjectId
+  type          String   @default("text")
+  message       String
+  messageStatus String   @default("sent")
+  createdAt     DateTime @default(now())
+
+  sender        User     @relation("UserSentMessages", fields: [senderId], references: [id])
+  reciever      User     @relation("UserReceivedMessages", fields: [recieverId], references: [id])
 }
